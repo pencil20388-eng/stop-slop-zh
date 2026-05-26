@@ -1,13 +1,3 @@
----
-name: stop-slop-zh
-description: >
-  Remove AI writing patterns from Chinese prose. Use this skill when writing, editing,
-  or reviewing Chinese text to eliminate predictable AI tells. Also use when the user
-  asks to write articles, blog posts, WeChat posts, social media content, or any prose
-  in Chinese. Applies banned word lists, punctuation rules, structural constraints,
-  and a 4-layer quality check system.
----
-
 # Stop Slop 中文版 — 消除中文 AI 写作痕迹
 
 写中文内容时，消除所有可预测的 AI 写作模式。让输出读起来像一个有见识的人在认真聊一件事，而不是 AI 在输出信息。
