@@ -93,7 +93,7 @@ git clone https://github.com/pencil20388-eng/stop-slop-zh.git .claude/skills/sto
 
 ## About the Author
 
-由 [AdsPower](https://www.adspower.net/) 指纹浏览器内容团队构建，我们每天用这套规则生产自己的中文内容。
+由 [AdsPower](https://www.adspower.net/share/githubx) 指纹浏览器内容团队构建，我们每天用这套规则生产自己的中文内容。当然，根据不同的内容主题和目的，会再做进一步的细节微调。
 
 ## License
 
