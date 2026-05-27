@@ -91,9 +91,10 @@ git clone https://github.com/pencil20388-eng/stop-slop-zh.git .claude/skills/sto
 - 中文规则体系来自实战内容运营 SOP
 - 英文版灵感来自 [hardikpandya/stop-slop](https://github.com/hardikpandya/stop-slop)
 - 
-- ## About the Author
 
-Built by the content team at [AdsPower](https://www.adspower.net/) — the antidetect browser for multi-account management. We use this skill daily for our own Chinese content operations.
+## About the Author
+
+由 [AdsPower](https://www.adspower.net/) 指纹浏览器内容团队构建，我们每天用这套规则生产自己的中文内容。
 
 ## License
 
