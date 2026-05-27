@@ -96,6 +96,12 @@ git clone https://github.com/pencil20388-eng/stop-slop-zh.git .claude/skills/sto
 [MIT](LICENSE)
 
 ---
+## 相关讨论
+
+- 📌 [hardikpandya/stop-slop Discussion](https://github.com/hardikpandya/stop-slop) — 英文原版作者仓库，本项目的灵感来源
+- 📌 [Leonxlnx/taste-skill Issue](https://github.com/Leonxlnx/taste-skill/issues) — 在 taste-skill（21k stars）中讨论中文 AI 写作模式
+- 📌 [anthropics/knowledge-work-plugins Issue](https://github.com/anthropics/knowledge-work-plugins/issues) — 向 Anthropic 官方提议加入中文内容质检能力
+- 
 
 **⭐ 如果你也受不了 AI 中文写作的「AI 味」，给个 Star 吧。**
 
