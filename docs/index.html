@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>stop-slop-zh — 干掉中文 AI 味，让 AI 写出人话</title>
+<meta name="description" content="一个 Claude Code / Cursor 技能包，专治中文 AI 写作痕迹。禁用词清单、标点规则、口语化词组库、四层质检系统。解决 AI 写中文时的「综上所述」「值得注意的是」「在当今的时代」等套路。">
+<meta name="keywords" content="AI 味,中文 AI 写作,ChatGPT 中文,去除 AI 痕迹,AI 写作质检,stop slop 中文,AI 文案,Claude Code skill,Cursor 技能包,公众号写作,AI 写作助手">
+<meta name="author" content="pennyops">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://pencil20388-eng.github.io/stop-slop-zh/">
+<meta property="og:title" content="stop-slop-zh — 干掉中文 AI 味">
+<meta property="og:description" content="专治中文 AI 写作痕迹的技能包。禁用词、标点规则、口语化词组库、四层质检。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pencil20388-eng.github.io/stop-slop-zh/">
+<meta property="og:locale" content="zh_CN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="stop-slop-zh — 干掉中文 AI 味">
+<meta name="twitter:description" content="专治中文 AI 写作痕迹的技能包。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;900&family=Noto+Sans+SC:wght@300;400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{
+--ink:#1a1a18;
+--paper:#f4f1ea;
+--paper2:#ebe6db;
+--red:#c0392b;
+--muted:#6b665c;
+--line:#d6d0c4;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+background:var(--paper);
+color:var(--ink);
+font-family:'Noto Sans SC',sans-serif;
+font-weight:300;
+line-height:1.9;
+-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:760px;margin:0 auto;padding:0 28px;}
+
+/* masthead */
+.masthead{border-bottom:3px double var(--ink);padding:60px 0 20px;margin-bottom:0;}
+.kicker{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-bottom:20px;}
+h1{font-family:'Noto Serif SC',serif;font-weight:900;font-size:clamp(34px,6vw,56px);line-height:1.15;letter-spacing:-1px;}
+h1 .strike{position:relative;color:var(--muted);}
+h1 .strike::after{content:'';position:absolute;left:-2%;top:52%;width:104%;height:4px;background:var(--red);transform:rotate(-2deg);}
+.dateline{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);padding:14px 0;display:flex;justify-content:space-between;border-bottom:1px solid var(--line);flex-wrap:wrap;gap:8px;}
+
+/* lede */
+.lede{font-family:'Noto Serif SC',serif;font-size:20px;line-height:1.95;padding:36px 0;border-bottom:1px solid var(--line);}
+.lede .red{color:var(--red);font-weight:600;}
+
+/* the problem - sample bad text */
+section{padding:40px 0;border-bottom:1px solid var(--line);}
+.sec-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:18px;}
+.specimen{position:relative;padding:24px 28px;margin:8px 0;font-family:'Noto Serif SC',serif;font-size:16px;line-height:2;}
+.specimen.bad{background:var(--paper2);color:var(--muted);}
+.specimen.bad .hl{color:var(--red);text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:1.5px;}
+.specimen.good{background:#fff;border-left:3px solid var(--ink);}
+.tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;padding:3px 10px;margin-bottom:12px;}
+.tag.x{background:var(--red);color:#fff;}
+.tag.o{background:var(--ink);color:var(--paper);}
+
+/* feature list */
+.feat{display:grid;grid-template-columns:1fr;gap:0;}
+.feat-row{display:grid;grid-template-columns:40px 1fr;gap:18px;padding:20px 0;border-bottom:1px solid var(--line);align-items:start;}
+.feat-row:last-child{border-bottom:none;}
+.feat-num{font-family:'Noto Serif SC',serif;font-size:28px;font-weight:900;color:var(--red);line-height:1;}
+.feat-row h3{font-family:'Noto Serif SC',serif;font-size:18px;font-weight:600;margin-bottom:4px;}
+.feat-row p{font-size:15px;color:var(--muted);}
+
+/* banned words showcase */
+.banned{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;}
+.banned span{font-family:'Noto Serif SC',serif;font-size:15px;padding:6px 14px;background:var(--paper2);position:relative;color:var(--muted);}
+.banned span::after{content:'';position:absolute;left:8%;top:50%;width:84%;height:1.5px;background:var(--red);}
+
+/* install */
+.code{background:var(--ink);color:#e8e4d8;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.9;padding:22px 24px;overflow-x:auto;margin-top:8px;}
+.code .c{color:#8a857a;}
+.code .g{color:#9cc79c;}
+
+/* cta */
+.cta{text-align:center;padding:56px 0;}
+.cta a{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:1px;background:var(--ink);color:var(--paper);padding:16px 36px;text-decoration:none;transition:all .2s;}
+.cta a:hover{background:var(--red);}
+.cta .sub{font-size:13px;color:var(--muted);margin-top:16px;font-family:'JetBrains Mono',monospace;}
+
+footer{padding:40px 0 60px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);line-height:2;}
+footer a{color:var(--red);text-decoration:none;}
+a{color:var(--red);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="masthead">
+<div class="kicker">中文 AI 写作 · 去味指南</div>
+<h1>干掉 <span class="strike">AI 味</span><br>让 AI 写出人话</h1>
+</div>
+<div class="dateline">
+<span>stop-slop-zh</span>
+<span>Claude Code · Cursor · Codex CLI</span>
+<span>MIT License</span>
+</div>
+
+<p class="lede">
+AI 写中文有几个改不掉的毛病。开头必来一句<span class="red">「在当今...的时代」</span>，连接词永远是<span class="red">「值得注意的是」</span>，结尾一定<span class="red">「让我们拭目以待」</span>。这是一个专治这些毛病的技能包，装上之后，AI 写出来的中文会像一个有判断力的人在认真聊，而不是机器在输出信息。
+</p>
+
+<section>
+<div class="sec-label">病例对照</div>
+<div class="tag x">改前 · 一身 AI 味</div>
+<div class="specimen bad">
+<span class="hl">在当今数字化转型的时代</span>，<span class="hl">随着技术的不断进步</span>，越来越多的企业开始关注自动化。<span class="hl">值得注意的是</span>，这<span class="hl">不仅仅是</span>技术层面的变化，<span class="hl">更是</span>运营范式的根本性转变。<span class="hl">综上所述</span>，自动化已成为不可忽视的战略方向。
+</div>
+<div class="tag o">改后 · 像个人</div>
+<div class="specimen good">
+上周跟一个 200 人的电商团队聊，他们客服响应从 4 小时压到了 11 分钟。怎么做到的？就是把「物流到哪了」「怎么退货」这类重复问题丢给机器，人只管接疑难件。坦率的讲，这个速度很多同行还没反应过来。
+</div>
+</section>
+
+<section>
+<div class="sec-label">它管住了什么</div>
+<div class="feat">
+<div class="feat-row">
+<div class="feat-num">一</div>
+<div><h3>禁用词清单</h3><p>30+ 个 AI 最爱的废话连接词、总结套话、时代套话，全文搜索命中数必须为 0。</p>
+<div class="banned"><span>综上所述</span><span>值得注意的是</span><span>本质上</span><span>不难发现</span><span>换句话说</span><span>让我们拭目以待</span></div>
+</div>
+</div>
+<div class="feat-row">
+<div class="feat-num">二</div>
+<div><h3>标点规则</h3><p>AI 写中文极度偏爱冒号、破折号、双引号。这三个标点的命中数必须为 0，改用更自然的中文表达。</p></div>
+</div>
+<div class="feat-row">
+<div class="feat-num">三</div>
+<div><h3>口语化词组库</h3><p>50+ 个推荐表达，全文至少自然融入 8-10 个。「说真的」「踩过坑」「太离谱了」「说到点子上了」。</p></div>
+</div>
+<div class="feat-row">
+<div class="feat-num">四</div>
+<div><h3>四层质检系统</h3><p>硬性规则扫描 → 风格一致性 → 内容质量 → 活人感终审。每次写完自动输出质检报告。</p></div>
+</div>
+</div>
+</section>
+
+<section>
+<div class="sec-label">三十秒装好</div>
+<div class="code">
+<span class="c"># Claude Code，丢进 skills 目录</span><br>
+<span class="g">mkdir</span> -p .claude/skills<br>
+<span class="g">git clone</span> https://github.com/pencil20388-eng/stop-slop-zh.git .claude/skills/stop-slop-zh
+</div>
+<p style="font-size:14px;color:var(--muted);margin-top:18px;">装好之后直接说「帮我写一篇关于 XX 的文章」或「检查这段文字的 AI 味」，Claude 会自动套用规则并跑质检。Cursor、Codex CLI、Gemini CLI 同样适用。</p>
+</section>
+
+<div class="cta">
+<a href="https://github.com/pencil20388-eng/stop-slop-zh">在 GitHub 上查看 →</a>
+<div class="sub">如果它帮你省了改稿时间，点个 star ⭐</div>
+</div>
+
+<footer>
+由 <a href="https://www.adspower.net/">AdsPower</a> 指纹浏览器内容团队构建，我们每天用这套规则生产自己的中文内容。<br>
+灵感来自英文版 <a href="https://github.com/hardikpandya/stop-slop">stop-slop</a> · MIT License
+</footer>
+
+</div>
+</body>
+</html>
